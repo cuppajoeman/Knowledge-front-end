@@ -38,40 +38,43 @@ export default function Lemma(props) {
       <MathpixLoader>
         <MathpixMarkdown text={proof} />
       </MathpixLoader>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title:
-          <br />
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <br />
-          Proof:
-          <br />
-          <textarea name="proof" value={proof} onChange={handleChange} />
-          <br />
-          Definitions Used:
-          <br />
-          <textarea
-            name="defsUsed"
-            value={defsUsed}
-            onChange={(e) => setDefsUsed(e.target.value)}
-          />
-          <br />
-          Theorems Used:
-          <br />
-          <textarea
-            name="theoremsUsed"
-            value={theoremsUsed}
-            onChange={(e) => setTheoremsUsed(e.target.value)}
-          />
-        </label>
-        <br></br>
-        <input type="submit" value="Update" />
-      </form>
+      <details>
+        <summary>Edit:</summary>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Title:
+            <br />
+            <input
+              type="text"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <br />
+            Proof:
+            <br />
+            <textarea name="proof" value={proof} onChange={handleChange} />
+            <br />
+            Definitions Used:
+            <br />
+            <textarea
+              name="defsUsed"
+              value={defsUsed}
+              onChange={(e) => setDefsUsed(e.target.value)}
+            />
+            <br />
+            Theorems Used:
+            <br />
+            <textarea
+              name="theoremsUsed"
+              value={theoremsUsed}
+              onChange={(e) => setTheoremsUsed(e.target.value)}
+            />
+          </label>
+          <br></br>
+          <input type="submit" value="Update" />
+        </form>
+      </details>
     </details>
   )
 }

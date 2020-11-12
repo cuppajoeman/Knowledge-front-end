@@ -42,8 +42,8 @@ export default function NewDefinitionForm(props) {
   }
 
   return (
-    <div>
-      <h4>Create a new definition:</h4>
+    <details>
+      <summary>Create a new definition</summary>
       <form onSubmit={handleSubmit}>
         <label>
           Title:
@@ -73,6 +73,6 @@ export default function NewDefinitionForm(props) {
         <br></br>
         <input type="submit" value="Create" />
       </form>
-    </div>
+    </details>
   )
 }

@@ -51,8 +51,8 @@ export default function NewLemmaForm(props) {
   }
 
   return (
-    <div>
-      <h4>Create a new lemma:</h4>
+    <details>
+      <summary>Create a new lemma</summary>
       <MathpixLoader>
         <MathpixMarkdown text={proof} />
       </MathpixLoader>
@@ -90,6 +90,6 @@ export default function NewLemmaForm(props) {
         <br />
         <input type="submit" value="Create" />
       </form>
-    </div>
+    </details>
   )
 }

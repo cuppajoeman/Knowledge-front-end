@@ -18,10 +18,14 @@ import Theorem from './components/Theorem'
 import Proposition from './components/Proposition'
 import Lemma from './components/Lemma'
 
+import NewSectionForm from './components/forms/NewSectionForm'
+import NewTopicForm from './components/forms/NewTopicForm'
+
 import NewDefinitionForm from './components/forms/NewDefinitionForm'
 import NewTheoremForm from './components/forms/NewTheoremForm'
 import NewPropositionForm from './components/forms/NewPropositionForm'
 import NewLemmaForm from './components/forms/NewLemmaForm'
+import NewSubfieldForm from './components/forms/NewSubfieldForm'
 
 /**
  * Our data comes from users-data.js
@@ -128,14 +132,17 @@ export default function App() {
             return (
               <details key={aos._id}>
                 <summary>{aos.title}</summary>
+                <NewSubfieldForm parentId={aos._id} />
                 {aos.subfields.map((sf) => {
                   return (
                     <details key={sf._id}>
                       <summary>{sf.title}</summary>
+                      <NewTopicForm parentId={sf._id} />
                       {sf.topics.map((t) => {
                         return (
                           <details key={t._id}>
                             <summary>{t.title}</summary>
+                            <NewSectionForm parentId={t._id} />
                             {t.sections.map((sec) => {
                               return (
                                 <details key={sec._id}>

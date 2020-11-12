@@ -35,32 +35,35 @@ export default function Definition(props) {
       <MathpixLoader>
         <MathpixMarkdown text={content} />
       </MathpixLoader>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Title:
-          <br />
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <br />
-          Content:
-          <br />
-          <textarea name="content" value={content} onChange={handleChange} />
-          <br />
-          Definitions Used:
-          <br />
-          <textarea
-            name="defsUsed"
-            value={defsUsed}
-            onChange={(e) => setDefsUsed(e.target.value)}
-          />
-        </label>
-        <br></br>
-        <input type="submit" value="Update" />
-      </form>
+      <details>
+        <summary>Edit:</summary>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Title:
+            <br />
+            <input
+              type="text"
+              name="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <br />
+            Content:
+            <br />
+            <textarea name="content" value={content} onChange={handleChange} />
+            <br />
+            Definitions Used:
+            <br />
+            <textarea
+              name="defsUsed"
+              value={defsUsed}
+              onChange={(e) => setDefsUsed(e.target.value)}
+            />
+          </label>
+          <br></br>
+          <input type="submit" value="Update" />
+        </form>
+      </details>
     </details>
   )
 }
