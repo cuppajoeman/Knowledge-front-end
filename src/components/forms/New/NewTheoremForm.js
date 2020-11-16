@@ -2,6 +2,8 @@ import React from 'react'
 import { useMutation, gql, Mutation } from '@apollo/client'
 import { useState } from 'react'
 import { MathpixMarkdown, MathpixLoader } from 'mathpix-markdown-it'
+import KnowledgeUsedForm from './KnowledgeUsedForm'
+
 
 const CREATE_THEOREM = gql`
   mutation CreateTheorem(
@@ -10,16 +12,33 @@ const CREATE_THEOREM = gql`
     $proof: String
     $definitionsUsed: [ID!]
     $theoremsUsed: [ID!]
+    $propositionsUsed: [ID!]
+    $lemmasUsed: [ID!]
   ) {
     createTheorem(
       sec_id: $sec_id
       title: $title
       proof: $proof
       definitionsUsed: $definitionsUsed
+      propositionsUsed: $propositionsUsed
       theoremsUsed: $theoremsUsed
+      lemmasUsed: $lemmasUsed
     ) {
+      _id
       title
       proof
+      definitionsUsed {
+        _id
+      }
+      theoremsUsed {
+        _id
+      }
+      lemmasUsed {
+        _id
+      }
+      propositionsUsed {
+        _id
+      }
     }
   }
 `
@@ -29,12 +48,16 @@ export default function NewTheoremForm(props) {
   const [proof, setProof] = useState('')
   const [defsUsed, setDefsUsed] = useState('')
   const [theoremsUsed, setTheoremsUsed] = useState('')
+  const [propositionsUsed, setPropositionsUsed] = useState('')
+  const [lemmasUsed, setLemmasUsed] = useState('')
   const [createTheorem, { data }] = useMutation(CREATE_THEOREM)
 
   function handleSubmit(event) {
     event.preventDefault()
     const dU = defsUsed.split(',')
     const tU = theoremsUsed.split(',')
+    const pU = propositionsUsed.split(',')
+    const lU = lemmasUsed.split(',')
     createTheorem({
       variables: {
         sec_id: props.parentId,
@@ -42,6 +65,8 @@ export default function NewTheoremForm(props) {
         proof,
         definitionsUsed: dU,
         theoremsUsed: tU,
+        propositionsUsed: pU,
+        lemmasUsed: lU,
       },
     })
   }
@@ -52,10 +77,11 @@ export default function NewTheoremForm(props) {
   }
 
   return (
-    <div>
-      <h4>Create a new theorem:</h4>
+    <details>
+      <summary>Create a new theorem:</summary>
       <MathpixLoader>
-        <MathpixMarkdown text={proof} />
+        <MathpixMarkdown text={title} /> 
+        <MathpixMarkdown text={proof} /> 
       </MathpixLoader>
       <form onSubmit={handleSubmit}>
         <label>
@@ -71,26 +97,11 @@ export default function NewTheoremForm(props) {
           Proof:
           <br />
           <textarea name="proof" value={proof} onChange={handleChange} />
-          <br />
-          Definitions Used:
-          <br />
-          <textarea
-            name="defsUsed"
-            value={defsUsed}
-            onChange={(e) => setDefsUsed(e.target.value)}
-          />
-          <br />
-          Theorems Used:
-          <br />
-          <textarea
-            name="theoremsUsed"
-            value={theoremsUsed}
-            onChange={(e) => setTheoremsUsed(e.target.value)}
-          />
+          <KnowledgeUsedForm funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed}} vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed}}/>
         </label>
         <br />
         <input type="submit" value="Create" />
       </form>
-    </div>
+    </details>
   )
 }

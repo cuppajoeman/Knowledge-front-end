@@ -2,45 +2,51 @@ import React from 'react'
 import { useState } from 'react'
 import { MathpixMarkdown, MathpixLoader } from 'mathpix-markdown-it'
 
-export default function Lemma(props) {
-  const [title, setTitle] = useState(props.lemma.title)
-  const [proof, setProof] = useState(props.lemma.proof)
-  const [theoremsUsed, setTheoremsUsed] = useState(
-    props.lemma.theoremsUsed.map((d) => d._id).toString()
-  )
+export default function Question(props) {
+  const [title, setTitle] = useState(props.question.title)
+  const [solution, setSolution] = useState(props.question.solution)
   const [defsUsed, setDefsUsed] = useState(
-    props.lemma.definitionsUsed.map((d) => d._id).toString()
+    props.question.definitionsUsed.map((d) => d._id).toString()
   )
-  // const [createDefinition, { data }] = useMutation(CREATE_DEFINITION)
+  const [theoremsUsed, setTheoremsUsed] = useState(
+    props.question.theoremsUsed.map((d) => d._id).toString()
+  )
+  const [propositionsUsed, setPropositionsUsed] = useState(
+    props.question.propositionsUsed.map((d) => d._id).toString()
+  )
+  const [lemmasUsed, setLemmasUsed] = useState(
+    props.question.lemmasUsed.map((d) => d._id).toString()
+  )
+  // const [createQuestion, { data }] = useMutation(CREATE_DEFINITION)
 
   function handleSubmit(event) {
     event.preventDefault()
     const definitionsUsed = defsUsed.split(',')
     // edit definition
-    // createDefinition({
+    // createQuestion({
     //   variables: { sec_id: props.parentId, title, content, definitionsUsed },
     // })
   }
 
   function handleChange(event) {
-    setProof(event.target.value)
+    setSolution(event.target.value)
     event.preventDefault()
   }
 
   return (
-    <details key={props.lemma._id}>
+    <details key={props.question._id}>
       <summary>
-        ID: {props.lemma._id}
+        ID: {props.question._id}
         <MathpixLoader>
-          <MathpixMarkdown text={props.lemma.title} />
+          <MathpixMarkdown text={props.question.title} />
         </MathpixLoader>
       </summary>
-      Proof:
+      Solution:
       <MathpixLoader>
-        <MathpixMarkdown text={proof} />
+        <MathpixMarkdown text={solution} />
       </MathpixLoader>
       <details>
-        <summary>Edit:</summary>
+        <summary>Edit</summary>
         <form onSubmit={handleSubmit}>
           <label>
             Title:
@@ -52,9 +58,9 @@ export default function Lemma(props) {
               onChange={(e) => setTitle(e.target.value)}
             />
             <br />
-            Proof:
+            Solution:
             <br />
-            <textarea name="proof" value={proof} onChange={handleChange} />
+            <textarea name="solution" value={solution} onChange={handleChange} />
             <br />
             Definitions Used:
             <br />
@@ -70,6 +76,21 @@ export default function Lemma(props) {
               name="theoremsUsed"
               value={theoremsUsed}
               onChange={(e) => setTheoremsUsed(e.target.value)}
+            />
+            <br />
+            Propositions Used:
+            <br />
+            <textarea
+              name="propositionsUsed"
+              value={propositionsUsed}
+              onChange={(e) => setPropositionsUsed(e.target.value)}
+            />
+            Lemmas Used:
+            <br />
+            <textarea
+              name="lemmasUsed"
+              value={lemmasUsed}
+              onChange={(e) => setLemmasUsed(e.target.value)}
             />
           </label>
           <br></br>

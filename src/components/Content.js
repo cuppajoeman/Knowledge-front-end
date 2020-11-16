@@ -16,19 +16,16 @@ import Can from "./Can"
 
 // import Profile from './components/Profile'
 
-import Definition from './knowledge/Definition'
-import Theorem from './knowledge/Theorem'
-import Proposition from './knowledge/Proposition'
-import Lemma from './knowledge/Lemma'
-
 import NewSectionForm from './forms/New/NewSectionForm'
 import NewTopicForm from './forms/New/NewTopicForm'
 
-import NewDefinitionForm from './forms/New/NewDefinitionForm'
-import NewTheoremForm from './forms/New/NewTheoremForm'
-import NewPropositionForm from './forms/New/NewPropositionForm'
-import NewLemmaForm from './forms/New/NewLemmaForm'
 import NewSubfieldForm from './forms/New/NewSubfieldForm'
+
+import DefinitionList from './lists/DefinitionList'
+import PropositionList from './lists/PropositionList'
+import LemmaList from './lists/LemmaList'
+import TheoremList from './lists/TheoremList'
+import QuestionList from './lists/QuestionList'
 
 /**
  * Our data comes from users-data.js
@@ -67,6 +64,12 @@ const GET_EVERYTHING = gql`
               theoremsUsed {
                 _id
               }
+              propositionsUsed {
+                _id
+              }
+              lemmasUsed {
+                _id
+              }
             }
             propositions {
               _id
@@ -78,6 +81,12 @@ const GET_EVERYTHING = gql`
               theoremsUsed {
                 _id
               }
+              propositionsUsed {
+                _id
+              }
+              lemmasUsed {
+                _id
+              }
             }
             lemmas {
               _id
@@ -87,6 +96,29 @@ const GET_EVERYTHING = gql`
                 _id
               }
               theoremsUsed {
+                _id
+              }
+              propositionsUsed {
+                _id
+              }
+              lemmasUsed {
+                _id
+              }
+            }
+            questions {
+              _id
+              title
+              solution
+              definitionsUsed {
+                _id
+              }
+              theoremsUsed {
+                _id
+              }
+              propositionsUsed {
+                _id
+              }
+              lemmasUsed {
                 _id
               }
             }
@@ -191,101 +223,11 @@ export default function Content() {
                                 return (
                                   <details key={sec._id}>
                                     <summary>{sec.title}</summary>
-                                    <details>
-                                      <summary>Definitions</summary>
-                                      <Can
-                                        role={user.role}
-                                        perform="posts:edit"
-                                        data={{
-                                          // userId: user.id,
-                                          // postOwnerId: post.ownerId
-                                          // TODO
-                                          userId: 3,
-                                          postOwnerId: 3
-                                        }}
-                                        yes={() => (
-                                        <NewDefinitionForm parentId={sec._id} />
-                                        )}
-                                      />
-                                      {sec.definitions.map((def) => {
-                                        return (
-                                          <Definition key={def._id} def={def} />
-                                        )
-                                      })}
-                                    </details>
-                                    {/* Eventually turn this into one thing, command pattern? */}
-                                    <details>
-                                      <summary>Theorems</summary>
-                                      <Can
-                                        role={user.role}
-                                        perform="posts:edit"
-                                        data={{
-                                          // userId: user.id,
-                                          // postOwnerId: post.ownerId
-                                          // TODO
-                                          userId: 3,
-                                          postOwnerId: 3
-                                        }}
-                                        yes={() => (
-                                        <NewTheoremForm parentId={sec._id} />
-                                        )}
-                                      />
-                                      {sec.theorems.map((theorem) => {
-                                        return (
-                                          <Theorem
-                                            key={theorem._id}
-                                            theorem={theorem}
-                                          />
-                                        )
-                                      })}
-                                    </details>
-                                    <details>
-                                      <summary>Propositions</summary>
-                                      <Can
-                                        role={user.role}
-                                        perform="posts:edit"
-                                        data={{
-                                          // userId: user.id,
-                                          // postOwnerId: post.ownerId
-                                          // TODO
-                                          userId: 3,
-                                          postOwnerId: 3
-                                        }}
-                                        yes={() => (
-                                        <NewPropositionForm parentId={sec._id} />
-                                        )}
-                                      />
-                                      {sec.propositions.map((proposition) => {
-                                        return (
-                                          <Proposition
-                                            key={proposition._id}
-                                            proposition={proposition}
-                                          />
-                                        )
-                                      })}
-                                    </details>
-                                    <details>
-                                      <summary>Lemmas</summary>
-                                      <Can
-                                        role={user.role}
-                                        perform="posts:edit"
-                                        data={{
-                                          // userId: user.id,
-                                          // postOwnerId: post.ownerId
-                                          // TODO
-                                          userId: 3,
-                                          postOwnerId: 3
-                                        }}
-                                        yes={() => (
-                                        <NewLemmaForm parentId={sec._id} />
-                                        )}
-                                      />
-                                      {sec.lemmas.map((lemma) => {
-                                        return (
-                                          <Lemma key={lemma._id} lemma={lemma} />
-                                        )
-                                      })}
-                                    </details>
+                                    <DefinitionList sec={sec} />
+                                    <TheoremList sec={sec} />
+                                    <PropositionList sec={sec} />
+                                    <LemmaList sec={sec} />
+                                    <QuestionList sec={sec} />
                                   </details>
                                 )
                               })}

@@ -2,6 +2,7 @@ import React from 'react'
 import { useMutation, gql, Mutation } from '@apollo/client'
 import { useState } from 'react'
 import { MathpixMarkdown, MathpixLoader } from 'mathpix-markdown-it'
+import KnowledgeUsedForm from './KnowledgeUsedForm'
 
 const CREATE_LEMMA = gql`
   mutation CreateLemma(
@@ -10,6 +11,8 @@ const CREATE_LEMMA = gql`
     $proof: String
     $definitionsUsed: [ID!]
     $theoremsUsed: [ID!]
+    $propositionsUsed: [ID!]
+    $lemmasUsed: [ID!]
   ) {
     createLemma(
       sec_id: $sec_id
@@ -17,6 +20,8 @@ const CREATE_LEMMA = gql`
       proof: $proof
       definitionsUsed: $definitionsUsed
       theoremsUsed: $theoremsUsed
+      propositionsUsed: $propositionsUsed
+      lemmasUsed: $lemmasUsed
     ) {
       title
       proof
@@ -28,12 +33,16 @@ export default function NewLemmaForm(props) {
   const [proof, setProof] = useState('')
   const [defsUsed, setDefsUsed] = useState('')
   const [theoremsUsed, setTheoremsUsed] = useState('')
+  const [propositionsUsed, setPropositionsUsed] = useState('')
+  const [lemmasUsed, setLemmasUsed] = useState('')
   const [createLemma, { data }] = useMutation(CREATE_LEMMA)
 
   function handleSubmit(event) {
     event.preventDefault()
     const dU = defsUsed.split(',')
     const tU = theoremsUsed.split(',')
+    const pU = propositionsUsed.split(',')
+    const lU = lemmasUsed.split(',')
     createLemma({
       variables: {
         sec_id: props.parentId,
@@ -41,6 +50,8 @@ export default function NewLemmaForm(props) {
         proof,
         definitionsUsed: dU,
         theoremsUsed: tU,
+        propositionsUsed: pU,
+        lemmasUsed: lU,
       },
     })
   }
@@ -54,38 +65,19 @@ export default function NewLemmaForm(props) {
     <details>
       <summary>Create a new lemma</summary>
       <MathpixLoader>
+        <MathpixMarkdown text={title} />
         <MathpixMarkdown text={proof} />
       </MathpixLoader>
       <form onSubmit={handleSubmit}>
         <label>
           Title:
           <br />
-          <input
-            type="text"
-            name="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <textarea name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
           <br />
           Proof:
           <br />
           <textarea name="proof" value={proof} onChange={handleChange} />
-          <br />
-          Definitions Used:
-          <br />
-          <textarea
-            name="defsUsed"
-            value={defsUsed}
-            onChange={(e) => setDefsUsed(e.target.value)}
-          />
-          <br />
-          Theorems Used:
-          <br />
-          <textarea
-            name="theoremsUsed"
-            value={theoremsUsed}
-            onChange={(e) => setTheoremsUsed(e.target.value)}
-          />
+          <KnowledgeUsedForm funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed}} vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed}}/>
         </label>
         <br />
         <input type="submit" value="Create" />

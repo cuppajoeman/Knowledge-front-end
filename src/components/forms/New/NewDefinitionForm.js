@@ -16,8 +16,12 @@ const CREATE_DEFINITION = gql`
       content: $content
       definitionsUsed: $definitionsUsed
     ) {
+      _id
       title
       content
+      definitionsUsed {
+        _id
+      }
     }
   }
 `
