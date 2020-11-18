@@ -11,6 +11,8 @@ const CREATE_PROPOSITION = gql`
     $proof: String
     $definitionsUsed: [ID!]
     $theoremsUsed: [ID!]
+    $propositionsUsed: [ID!]
+    $lemmasUsed: [ID!]
   ) {
     createProposition(
       sec_id: $sec_id
@@ -18,6 +20,8 @@ const CREATE_PROPOSITION = gql`
       proof: $proof
       definitionsUsed: $definitionsUsed
       theoremsUsed: $theoremsUsed
+      propositionsUsed: $propositionsUsed
+      lemmasUsed: $lemmasUsed
     ) {
       title
       proof
@@ -61,13 +65,14 @@ export default function NewTheoremForm(props) {
     <details>
       <summary>Create a new proposition:</summary>
       <MathpixLoader>
+        <MathpixMarkdown text={title} />
         <MathpixMarkdown text={proof} />
       </MathpixLoader>
       <form onSubmit={handleSubmit}>
         <label>
           Title:
           <br />
-          <input
+          <textarea
             type="text"
             name="title"
             value={title}

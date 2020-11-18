@@ -46,14 +46,6 @@ const GET_EVERYTHING = gql`
           sections {
             _id
             title
-            definitions {
-              _id
-              title
-              content
-              definitionsUsed {
-                _id
-              }
-            }
             theorems {
               _id
               title
@@ -223,7 +215,7 @@ export default function Content() {
                                 return (
                                   <details key={sec._id}>
                                     <summary>{sec.title}</summary>
-                                    <DefinitionList sec={sec} />
+                                    <DefinitionList sec_id={sec._id} />
                                     <TheoremList sec={sec} />
                                     <PropositionList sec={sec} />
                                     <LemmaList sec={sec} />
