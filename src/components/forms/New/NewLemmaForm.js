@@ -13,6 +13,7 @@ const CREATE_LEMMA = gql`
     $theoremsUsed: [ID!]
     $propositionsUsed: [ID!]
     $lemmasUsed: [ID!]
+    $notationUsed: [ID!]
   ) {
     createLemma(
       sec_id: $sec_id
@@ -22,6 +23,7 @@ const CREATE_LEMMA = gql`
       theoremsUsed: $theoremsUsed
       propositionsUsed: $propositionsUsed
       lemmasUsed: $lemmasUsed
+      notationUsed: $notationUsed
     ) {
       title
       proof
@@ -35,6 +37,7 @@ export default function NewLemmaForm(props) {
   const [theoremsUsed, setTheoremsUsed] = useState('')
   const [propositionsUsed, setPropositionsUsed] = useState('')
   const [lemmasUsed, setLemmasUsed] = useState('')
+  const [notationUsed, setNotationUsed] = useState('')
   const [createLemma, { data }] = useMutation(CREATE_LEMMA)
 
   function handleSubmit(event) {
@@ -43,6 +46,7 @@ export default function NewLemmaForm(props) {
     const tU = theoremsUsed.split(',')
     const pU = propositionsUsed.split(',')
     const lU = lemmasUsed.split(',')
+    const nU = notationUsed.split(',')
     createLemma({
       variables: {
         sec_id: props.parentId,
@@ -52,6 +56,7 @@ export default function NewLemmaForm(props) {
         theoremsUsed: tU,
         propositionsUsed: pU,
         lemmasUsed: lU,
+        notationUsed: nU,
       },
     })
   }
@@ -77,7 +82,9 @@ export default function NewLemmaForm(props) {
           Proof:
           <br />
           <textarea name="proof" value={proof} onChange={handleChange} />
-          <KnowledgeUsedForm funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed}} vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed}}/>
+          <KnowledgeUsedForm 
+          funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed, setNotationUsed}} 
+          vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed, notationUsed}}/>
         </label>
         <br />
         <input type="submit" value="Create" />

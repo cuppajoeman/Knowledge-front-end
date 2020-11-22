@@ -15,6 +15,9 @@ query DefinitionsOfSection( $sec_id: ID!)
         definitionsUsed {
             _id
         }
+        notationUsed {
+            _id
+        }
     }
 }
 `

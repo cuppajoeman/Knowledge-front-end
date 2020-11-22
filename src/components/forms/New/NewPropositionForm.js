@@ -5,7 +5,7 @@ import { MathpixMarkdown, MathpixLoader } from 'mathpix-markdown-it'
 import KnowledgeUsedForm from './KnowledgeUsedForm'
 
 const CREATE_PROPOSITION = gql`
-  mutation CreateTheorem(
+  mutation CreateProposition(
     $sec_id: ID!
     $title: String!
     $proof: String
@@ -13,6 +13,7 @@ const CREATE_PROPOSITION = gql`
     $theoremsUsed: [ID!]
     $propositionsUsed: [ID!]
     $lemmasUsed: [ID!]
+    $notationUsed: [ID!]
   ) {
     createProposition(
       sec_id: $sec_id
@@ -22,6 +23,7 @@ const CREATE_PROPOSITION = gql`
       theoremsUsed: $theoremsUsed
       propositionsUsed: $propositionsUsed
       lemmasUsed: $lemmasUsed
+      notationUsed: $notationUsed
     ) {
       title
       proof
@@ -35,6 +37,7 @@ export default function NewTheoremForm(props) {
   const [theoremsUsed, setTheoremsUsed] = useState('')
   const [propositionsUsed, setPropositionsUsed] = useState('')
   const [lemmasUsed, setLemmasUsed] = useState('')
+  const [notationUsed, setNotationUsed] = useState('')
   const [createProposition, { data }] = useMutation(CREATE_PROPOSITION)
 
   function handleSubmit(event) {
@@ -43,6 +46,7 @@ export default function NewTheoremForm(props) {
     const tU = theoremsUsed.split(',')
     const pU = propositionsUsed.split(',')
     const lU = lemmasUsed.split(',')
+    const nU = notationUsed.split(',')
     createProposition({
       variables: {
         sec_id: props.parentId,
@@ -52,6 +56,7 @@ export default function NewTheoremForm(props) {
         theoremsUsed: tU,
         propositionsUsed: pU,
         lemmasUsed: lU,
+        notationUsed: nU,
       },
     })
   }
@@ -82,7 +87,9 @@ export default function NewTheoremForm(props) {
           Proof:
           <br />
           <textarea name="proof" value={proof} onChange={handleChange} />
-          <KnowledgeUsedForm funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed}} vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed}}/>
+          <KnowledgeUsedForm 
+          funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed, setNotationUsed}} 
+          vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed, notationUsed}}/>
         </label>
         <br />
         <input type="submit" value="Create" />

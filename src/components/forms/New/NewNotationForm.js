@@ -4,41 +4,38 @@ import { useState } from 'react'
 import { MathpixMarkdown, MathpixLoader } from 'mathpix-markdown-it'
 import KnowledgeUsedForm from './KnowledgeUsedForm'
 
-const CREATE_QUESTION = gql`
-  mutation CreateQuestion(
+const CREATE_NOTATION = gql`
+  mutation CreateNotation(
     $sec_id: ID!
     $title: String!
-    $solution: String
+    $content: String
     $definitionsUsed: [ID!]
     $theoremsUsed: [ID!]
     $propositionsUsed: [ID!]
     $lemmasUsed: [ID!]
-    $notationUsed: [ID!]
   ) {
-    createQuestion(
+    createNotation(
       sec_id: $sec_id
       title: $title
-      solution: $solution
+      content: $content
       definitionsUsed: $definitionsUsed
       theoremsUsed: $theoremsUsed
       propositionsUsed: $propositionsUsed
       lemmasUsed: $lemmasUsed
-      notationUsed: $notationUsed
     ) {
       title
-      proof
+      content
     }
   }
 `
-export default function NewLemmaForm(props) {
+export default function NewNotationForm(props) {
   const [title, setTitle] = useState('')
-  const [solution, setSolution] = useState('')
+  const [content, setContent] = useState('')
   const [defsUsed, setDefsUsed] = useState('')
   const [theoremsUsed, setTheoremsUsed] = useState('')
   const [propositionsUsed, setPropositionsUsed] = useState('')
   const [lemmasUsed, setLemmasUsed] = useState('')
-  const [notationUsed, setNotationUsed] = useState('')
-  const [createLemma, { data }] = useMutation(CREATE_QUESTION)
+  const [createNotation, { data }] = useMutation(CREATE_NOTATION)
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -46,45 +43,46 @@ export default function NewLemmaForm(props) {
     const tU = theoremsUsed.split(',')
     const pU = propositionsUsed.split(',')
     const lU = lemmasUsed.split(',')
-    const nU = notationUsed.split(',')
-    createLemma({
+    createNotation({
       variables: {
         sec_id: props.parentId,
         title,
-        solution,
+        content,
         definitionsUsed: dU,
         theoremsUsed: tU,
         propositionsUsed: pU,
         lemmasUsed: lU,
-        notationUsed: nU,
       },
     })
   }
 
   function handleChange(event) {
-    setSolution(event.target.value)
+    setContent(event.target.value)
     event.preventDefault()
   }
 
   return (
     <details>
-      <summary>Create a new question</summary>
+      <summary>Create new notation:</summary>
       <MathpixLoader>
         <MathpixMarkdown text={title} />
-        <MathpixMarkdown text={solution} />
+        <MathpixMarkdown text={content} />
       </MathpixLoader>
       <form onSubmit={handleSubmit}>
         <label>
           Title:
           <br />
-          <textarea name="title" value={title} onChange={(e) => setTitle(e.target.value)} />
+          <textarea
+            type="text"
+            name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <br />
-          Solution:
+          Content:
           <br />
-          <textarea name="solution" value={solution} onChange={handleChange} />
-          <KnowledgeUsedForm 
-          funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed, setNotationUsed}} 
-          vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed, notationUsed}}/>
+          <textarea name="content" value={content} onChange={handleChange} />
+          <KnowledgeUsedForm funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed}} vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed}}/>
         </label>
         <br />
         <input type="submit" value="Create" />

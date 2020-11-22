@@ -9,12 +9,14 @@ const CREATE_DEFINITION = gql`
     $title: String!
     $content: String
     $definitionsUsed: [ID!]
+    $notationUsed: [ID!]
   ) {
     createDefinition(
       sec_id: $sec_id
       title: $title
       content: $content
       definitionsUsed: $definitionsUsed
+      notationUsed: $notationUsed
     ) {
       _id
       title
@@ -30,13 +32,16 @@ export default function NewDefinitionForm(props) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [defsUsed, setDefsUsed] = useState('')
+  const [notationUsed, setNotationUsed] = useState('')
   const [createDefinition, { data }] = useMutation(CREATE_DEFINITION)
 
   function handleSubmit(event) {
     event.preventDefault()
     const definitionsUsed = defsUsed.split(',')
+    const nU = notationUsed.split(',')
+    console.log( {variables: { sec_id: props.parentId, title, content, definitionsUsed, notationUsed: nU} })
     createDefinition({
-      variables: { sec_id: props.parentId, title, content, definitionsUsed },
+      variables: { sec_id: props.parentId, title, content, definitionsUsed, notationUsed: nU },
     })
   }
 
@@ -69,6 +74,11 @@ export default function NewDefinitionForm(props) {
             name="defsUsed"
             value={defsUsed}
             onChange={(e) => setDefsUsed(e.target.value)}
+          />
+          <textarea
+            name="notationUsed"
+            value={notationUsed}
+            onChange={(e) => setNotationUsed(e.target.value)}
           />
         </label>
         <MathpixLoader>

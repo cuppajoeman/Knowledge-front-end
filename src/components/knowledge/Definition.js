@@ -8,11 +8,14 @@ export default function Definition(props) {
   const [defsUsed, setDefsUsed] = useState(
     props.def.definitionsUsed.map((d) => d._id).toString()
   )
+  const [notationUsed, setNotationUsed] = useState(
+    props.def.notationUsed.map((n) => n._id).toString()
+  )
   // const [createDefinition, { data }] = useMutation(CREATE_DEFINITION)
 
   function handleSubmit(event) {
     event.preventDefault()
-    const definitionsUsed = defsUsed.split(',')
+    // const definitionsUsed = defsUsed.split(',')
     // edit definition
     // createDefinition({
     //   variables: { sec_id: props.parentId, title, content, definitionsUsed },
@@ -58,6 +61,11 @@ export default function Definition(props) {
               name="defsUsed"
               value={defsUsed}
               onChange={(e) => setDefsUsed(e.target.value)}
+            />
+            <textarea
+              name="notationUsed"
+              value={notationUsed}
+              onChange={(e) => setNotationUsed(e.target.value)}
             />
           </label>
           <br></br>

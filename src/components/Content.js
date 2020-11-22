@@ -26,6 +26,7 @@ import PropositionList from './lists/PropositionList'
 import LemmaList from './lists/LemmaList'
 import TheoremList from './lists/TheoremList'
 import QuestionList from './lists/QuestionList'
+import NotationList from './lists/NotationList'
 
 /**
  * Our data comes from users-data.js
@@ -220,6 +221,7 @@ export default function Content() {
                                     <PropositionList sec={sec} />
                                     <LemmaList sec={sec} />
                                     <QuestionList sec={sec} />
+                                    <NotationList sec_id={sec._id} />
                                   </details>
                                 )
                               })}

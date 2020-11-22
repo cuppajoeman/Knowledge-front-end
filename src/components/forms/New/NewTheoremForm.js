@@ -14,6 +14,7 @@ const CREATE_THEOREM = gql`
     $theoremsUsed: [ID!]
     $propositionsUsed: [ID!]
     $lemmasUsed: [ID!]
+    $notationUsed: [ID!]
   ) {
     createTheorem(
       sec_id: $sec_id
@@ -23,6 +24,7 @@ const CREATE_THEOREM = gql`
       propositionsUsed: $propositionsUsed
       theoremsUsed: $theoremsUsed
       lemmasUsed: $lemmasUsed
+      notationUsed: $notationUsed
     ) {
       _id
       title
@@ -39,6 +41,9 @@ const CREATE_THEOREM = gql`
       propositionsUsed {
         _id
       }
+      notationUsed {
+        _id
+      }
     }
   }
 `
@@ -50,6 +55,7 @@ export default function NewTheoremForm(props) {
   const [theoremsUsed, setTheoremsUsed] = useState('')
   const [propositionsUsed, setPropositionsUsed] = useState('')
   const [lemmasUsed, setLemmasUsed] = useState('')
+  const [notationUsed, setNotationUsed] = useState('')
   const [createTheorem, { data }] = useMutation(CREATE_THEOREM)
 
   function handleSubmit(event) {
@@ -58,6 +64,21 @@ export default function NewTheoremForm(props) {
     const tU = theoremsUsed.split(',')
     const pU = propositionsUsed.split(',')
     const lU = lemmasUsed.split(',')
+    const nU = notationUsed.split(',')
+    console.log(
+      {
+      variables: {
+        sec_id: props.parentId,
+        title,
+        proof,
+        definitionsUsed: dU,
+        theoremsUsed: tU,
+        propositionsUsed: pU,
+        lemmasUsed: lU,
+        notationUsed: nU,
+      }
+    }
+    )
     createTheorem({
       variables: {
         sec_id: props.parentId,
@@ -67,6 +88,7 @@ export default function NewTheoremForm(props) {
         theoremsUsed: tU,
         propositionsUsed: pU,
         lemmasUsed: lU,
+        notationUsed: nU,
       },
     })
   }
@@ -87,7 +109,7 @@ export default function NewTheoremForm(props) {
         <label>
           Title:
           <br />
-          <input
+          <textarea
             type="text"
             name="title"
             value={title}
@@ -97,7 +119,9 @@ export default function NewTheoremForm(props) {
           Proof:
           <br />
           <textarea name="proof" value={proof} onChange={handleChange} />
-          <KnowledgeUsedForm funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed}} vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed}}/>
+          <KnowledgeUsedForm 
+          funs={{handleSubmit, setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed, setNotationUsed}} 
+          vars={{defsUsed, theoremsUsed, propositionsUsed, lemmasUsed, notationUsed}}/>
         </label>
         <br />
         <input type="submit" value="Create" />

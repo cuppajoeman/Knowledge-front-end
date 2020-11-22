@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function KnowledgeForm(
     { 
-        funs: {setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed}, 
-        vars: {defsUsed, theoremsUsed, propositionsUsed, lemmasUsed} 
+        funs: {setDefsUsed, setTheoremsUsed, setPropositionsUsed, setLemmasUsed,  setNotationUsed}, 
+        vars: {defsUsed, theoremsUsed, propositionsUsed, lemmasUsed,  notationUsed} 
     }) {
     return (
         <div>
@@ -38,6 +38,14 @@ export default function KnowledgeForm(
             name="lemmasUsed"
             value={lemmasUsed}
             onChange={(e) => setLemmasUsed(e.target.value)}
+          />
+          <br />
+          Notation Used:
+          <br />
+          <textarea
+            name="notationUsed"
+            value={notationUsed}
+            onChange={(e) => setNotationUsed(e.target.value)}
           />
       </div>
     )
